@@ -1,0 +1,12 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "721873242199.dkr.ecr.us-west-2.amazonaws.com/url-shortener-backend:latest",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "3001"
+    }
+  ]
+}
