@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",  // ESM module
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",  // output directory for transpiled files
+    "rootDir": "./src",  // source directory
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"]
+}
