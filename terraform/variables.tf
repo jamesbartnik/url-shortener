@@ -15,3 +15,9 @@ variable "application_name" {
   type        = string
   default     = "url-shortener"
 }
+
+variable "frontend_bucket_name" {
+  description = "Name for the S3 bucket that will host the frontend"
+  type        = string
+  default     = "url-shortener-frontend-us-west-2"  # Or another unique name
+}

@@ -8,8 +8,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// 1) Parse JSON bodies on all incoming requests
 app.use(express.json());
+
+// 2) Then configure CORS
+app.use(cors({
+  origin: 'http://url-shortener-frontend-us-west-2.s3-website-us-west-2.amazonaws.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Handler functions
 const healthCheckHandler = (req: Request, res: Response) => {
@@ -21,6 +28,7 @@ const healthCheckHandler = (req: Request, res: Response) => {
 
 const shortenUrlHandler = async (req: Request, res: Response) => {
   try {
+    // now req.body will be your parsed JSON
     const { url } = req.body;
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
@@ -29,7 +37,9 @@ const shortenUrlHandler = async (req: Request, res: Response) => {
     const shortCode = generateShortCode();
     await saveUrl(shortCode, url);
 
-    const shortUrl = `${process.env.API_BASE_URL || `http://localhost:${PORT}`}/${shortCode}`;
+    const baseUrl = process.env.API_BASE_URL || `http://localhost:${PORT}`;
+    const shortUrl = `${baseUrl.replace(/\/$/, '')}/${shortCode}`;
+
     res.json({ shortUrl });
   } catch (error) {
     console.error('Error shortening URL:', error);

@@ -7,7 +7,9 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    const raw = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    const API_BASE = raw.replace(/\/$/, '');
+
 
     const shortenUrl = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,7 +23,7 @@ function App() {
         setError('');
 
         try {
-            const response = await axios.post(`${API_URL}/api/shorten`, { url });
+            const response = await axios.post(`${API_BASE}/api/shorten`, { url });
             setShortUrl(response.data.shortUrl);
         } catch (err) {
             setError('Failed to shorten URL');
