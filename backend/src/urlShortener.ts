@@ -10,7 +10,7 @@ const dynamoDB = new DynamoDB.DocumentClient({
     region: process.env.AWS_REGION || 'us-west-2',
 });
 
-const TABLE_NAME = process.env.DYNAMODB_TABLE || 'url-shortener';
+const TABLE_NAME = process.env.DYNAMODB_TABLE || 'UrlShortener';
 
 // Generate a short code for URLs
 export function generateShortCode(): string {
@@ -28,7 +28,13 @@ export async function saveUrl(shortCode: string, originalUrl: string): Promise<v
                 createdAt: new Date().toISOString()
             }
         };
-        await dynamoDB.put(params).promise();
+        try {
+            await dynamoDB.put(params).promise();
+            console.log("Saved URL", params.Item);
+        } catch (err) {
+            console.error("Dynamo put failed:", err);
+            throw err;    // or return a 500 from your route
+        }
     } else {
         // Local development - store in memory
         localUrlStore[shortCode] = originalUrl;

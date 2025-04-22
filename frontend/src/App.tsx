@@ -7,9 +7,8 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const raw = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    const raw = import.meta.env.VITE_NODE_ENV === "production" ? "http://url-shortener-env.eba-36rcujbz.us-west-2.elasticbeanstalk.com" : 'http://localhost:3001';
     const API_BASE = raw.replace(/\/$/, '');
-
 
     const shortenUrl = async (e: React.FormEvent) => {
         e.preventDefault();
